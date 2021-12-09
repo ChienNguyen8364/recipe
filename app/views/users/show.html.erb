@@ -1,0 +1,104 @@
+<section class="hero is-success">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Thông tin tài khoản
+            </h1>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-8">
+                <div class="columns is-centered">
+                    <div class="column is-4">
+                        <figure class="image is-128x128"  style="margin-left: auto; margin-right: auto;">
+                            <%= attachment_image_tag @user, :profile_image, fallback: "no-image.jpg", class: "is-fullheight" %>
+                        </figure>
+                    </div>
+                    
+                    <div class="column is-8">
+                        <table class="table is-fullwidth">
+                            <tr>
+                                <td class="is-size-4">
+                                    <strong>
+                                        <%= @user.username%>
+                                    </strong>
+                                </td>
+                                <% if @user.id == current_user.id %>
+                                    <td class="is-size-4">
+                                        <%= @user.email%>
+                                    </td>
+                                    <td>
+                                        <%= link_to "Sửa", edit_user_path(@user), class: "button is-primary" %>
+                                    </td>
+                                <% end %>
+                                
+                            </tr>
+                        </table>
+                        
+                        <table class="table is-fullwidth">
+                            <tr>
+                                <td>
+                                    <%= @user.profile%>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="columns is-multiline">
+            <% @user.recipes.each do |recipe| %>
+                <div class="column is-4">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <%= attachment_image_tag recipe, :image %>
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <%= link_to recipe_path(recipe), class: "panel-block" do %>
+                                        <span class="panel-icon">
+                                            <i class="fas fa-book" aria-hidden="true"></i>
+                                        </span>
+                                        Xem chi tiết
+                                    <% end %>
+                                    
+                                    <% if @user.id == current_user.id %>
+                                        <%= link_to edit_recipe_path(recipe), class: "panel-block" do %>
+                                            <span class="panel-icon">
+                                                <i class="fas fa-edit" aria-hidden="true"></i>
+                                            </span>
+                                            Chỉnh sửa
+                                        <% end %>
+                                        <%= link_to recipe_path(recipe), method: :delete, data: {confirm: "Ban chac chan muon xoa khong?"}, class: "panel-block" do %>
+                                            <span class="panel-icon">
+                                                <i class="fas fa-trash" aria-hidden="true"></i>
+                                            </span>
+                                            Xóa
+                                        <% end %>
+                                    <% end %>
+                                    
+                                </div>
+                            </div>
+                            <time>
+                                Ngày chỉnh sửa : <%= recipe.user.updated_at.strftime("%Y-%m-%d %H:%M") %>
+                            </time>
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</section>
+
